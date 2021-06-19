@@ -24,7 +24,7 @@ import static com.example.mit.util.TelegramUtil.createMessageTemplate;
 
 
 @Component
-public class SecondHandler implements Handler{
+public class RHandler implements Handler{
     @Autowired
     private KeyboardBuilder keyboardBuilder;
     @Autowired

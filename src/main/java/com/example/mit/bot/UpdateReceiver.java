@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -34,33 +35,43 @@ public class UpdateReceiver {
     @Transactional
     public List<PartialBotApiMethod<? extends Serializable>> handle(Update update) {
 
-
         try {
             if (isMessageWithText(update)) {
                 final Message message = update.getMessage();
+                System.out.println(message);
                 final int chatId = message.getFrom().getId();
-
                 final User user = userRepository.getByChatId(chatId)
                         .orElseGet(() -> userRepository.save(new User(chatId)));
                 return getHandlerByState(user.getBotState()).handle(user, message.getText());
-            } else if (update.hasCallbackQuery()) {
-
-
+            }
+            else if (update.hasCallbackQuery()) {
+                System.out.println(update.getCallbackQuery().getData());
                 final CallbackQuery callbackQuery = update.getCallbackQuery();
                 final int chatId = callbackQuery.getFrom().getId();
+                String message=callbackQuery.getData();
+                System.out.println(update.getCallbackQuery().getData());
                 if (callbackQuery.getData().equals("EXIT")){
                     final User user = userRepository.getByChatId(chatId)
                             .orElseGet(() -> userRepository.save(new User(chatId)));
                     user.setBotState(State.START);
                     return getHandlerByState(user.getBotState()).handle(user, callbackQuery.getData());
-
                 }
-                else {
+                else if (message.equals("LANGUAGE_RU")||
+                        message.equals("LANGUAGE_UZ_LATIN")||
+                        message.equals("LANGUAGE_UZ_KRIL")){
                     final User user = userRepository.getByChatId(chatId)
                             .orElseGet(() -> userRepository.save(new User(chatId)));
-                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
+                    user.setLanguage(message);
+//                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
                     userRepository.save(user);
+                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery.getData());
 
+                }else{
+                    final User user = userRepository.getByChatId(chatId)
+                            .orElseGet(() -> userRepository.save(new User(chatId)));
+                    user.setLanguage(message);
+//                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
+                    userRepository.save(user);
                     return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery.getData());
 
                 }
@@ -96,6 +107,6 @@ public class UpdateReceiver {
     }
 
     private boolean isMessageWithText(Update update) {
-        return !update.hasCallbackQuery() && update.hasMessage() && update.getMessage().hasText();
+        return !update.hasCallbackQuery() && update.hasMessage() && update.getMessage().hasText()&& !update.getMessage().hasContact();
     }
 }
