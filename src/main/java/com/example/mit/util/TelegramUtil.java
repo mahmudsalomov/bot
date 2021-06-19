@@ -1,6 +1,7 @@
 package com.example.mit.util;
 
 import com.example.mit.model.User;
+import com.example.mit.util.ButtonModel.InlineKeyboardModel;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -18,4 +19,30 @@ public class TelegramUtil {
                 .setText(text)
                 .setCallbackData(command);
     }
+
+    public static InlineKeyboardButton keyboard(String text){
+        return InlineKeyboardModel
+                .builder()
+                .text(text)
+                .callbackData("none")
+                .build();
+    }
+
+    public static InlineKeyboardButton keyboard(String text, String callback){
+        return InlineKeyboardModel
+                .builder()
+                .text(text)
+                .callbackData(callback)
+                .build();
+    }
+
+    public static InlineKeyboardButton keyboard(String text, String callback, String url){
+        return InlineKeyboardModel
+                .builder()
+                .text(text)
+                .callbackData(callback)
+                .url(url)
+                .build();
+    }
+
 }

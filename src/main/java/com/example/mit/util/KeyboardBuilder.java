@@ -1,21 +1,42 @@
 package com.example.mit.util;
 
-import org.springframework.stereotype.Component;
+import com.example.mit.util.ButtonModel.InlineKeyboardModel;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class KeyboardBuilder {
 
-    public InlineKeyboardButton keyboard(String name, String callback){
-        InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setText(name);
-        button.setCallbackData(callback);
-        return button;
+
+    public static InlineKeyboardButton keyboard(String text){
+        return InlineKeyboardModel
+                .builder()
+                .text(text)
+                .callbackData("none")
+                .build();
     }
+
+    public static InlineKeyboardButton keyboard(String text, String callback){
+        return InlineKeyboardModel
+                .builder()
+                .text(text)
+                .callbackData(callback)
+                .build();
+    }
+
+    public static InlineKeyboardButton keyboard(String text, String callback, String url){
+        return InlineKeyboardModel
+                .builder()
+                .text(text)
+                .callbackData(callback)
+                .url(url)
+                .build();
+    }
+
 
     public InlineKeyboardMarkup keyboardMarkup(List<InlineKeyboardButton> buttonList){
         List<List<InlineKeyboardButton>> rowList= new ArrayList<>();
@@ -27,8 +48,6 @@ public class KeyboardBuilder {
             rowList.add(keyboardButtonsRow);
         }
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-        keyboardButtonsRow.add(keyboard("Bosh menyu","EXIT"));
-        rowList.add(keyboardButtonsRow);
         return new InlineKeyboardMarkup(rowList);
     }
 
