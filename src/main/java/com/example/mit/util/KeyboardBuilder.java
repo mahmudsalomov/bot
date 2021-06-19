@@ -10,10 +10,10 @@ import java.util.List;
 @Component
 public class KeyboardBuilder {
 
-    public InlineKeyboardButton keyboard(String name, String calback){
+    public InlineKeyboardButton keyboard(String name, String callback){
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(name);
-        button.setCallbackData(calback);
+        button.setCallbackData(callback);
         return button;
     }
 
