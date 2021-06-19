@@ -2,7 +2,7 @@ package com.example.mit.repository;
 
 
 import com.example.mit.model.Product;
-import com.example.mit.model.projection.NameUzProduct;
+import com.example.mit.model.projection.uz_lat.NameUzProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

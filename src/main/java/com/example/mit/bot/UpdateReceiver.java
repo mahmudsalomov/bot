@@ -70,7 +70,6 @@ public class UpdateReceiver {
                     final User user = userRepository.getByChatId(chatId)
                             .orElseGet(() -> userRepository.save(new User(chatId)));
                     user.setLanguage(message);
-//                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
                     userRepository.save(user);
                     return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery.getData());
 

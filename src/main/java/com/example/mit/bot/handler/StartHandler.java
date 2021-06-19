@@ -3,7 +3,6 @@ package com.example.mit.bot.handler;
 
 import com.example.mit.bot.State;
 import com.example.mit.model.User;
-import com.example.mit.model.projection.NameUzCategory;
 import com.example.mit.repository.CategoryRepository;
 import com.example.mit.repository.UserRepository;
 import com.example.mit.util.ButtonModel.Col;
@@ -14,15 +13,9 @@ import com.example.mit.util.MessagesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.mit.util.TelegramUtil.createMessageTemplate;

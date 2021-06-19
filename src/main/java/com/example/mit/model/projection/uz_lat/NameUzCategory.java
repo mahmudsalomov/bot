@@ -1,4 +1,4 @@
-package com.example.mit.model.projection;
+package com.example.mit.model.projection.uz_lat;
 
 public interface NameUzCategory {
     String getName_uz();
