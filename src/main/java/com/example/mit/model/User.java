@@ -15,7 +15,8 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User{
+public class User {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,17 +25,19 @@ public class User{
     @NotNull
     private Integer chatId;
 
-    @Column(name = "name", unique = true, nullable = false)
-    @NotBlank
+    @Column(name = "name")
+//    @NotBlank
     private String name;
 
-    @Column(name = "score", nullable = false)
-    @NotNull
-    private Integer score;
+    @Column(name = "username")
+//    @NotBlank
+    private String username;
 
-    @Column(name = "high_score", nullable = false)
-    @NotNull
-    private Integer highScore;
+    private String firstname;
+
+    private String lastname;
+
+
 
     private String language;
 
@@ -45,12 +48,24 @@ public class User{
 
     @Column(name = "current_category_id", nullable = false)
     private Integer current_category_id;
+
+
     public User(int chatId) {
         this.chatId = chatId;
-        this.name = String.valueOf(chatId);
-        this.score = 0;
-        this.highScore = 0;
+        this.name= String.valueOf(chatId);
         this.botState = State.START;
         this.current_category_id=1;
     }
+
+    public User(org.telegram.telegrambots.meta.api.objects.User user) {
+        this.chatId = user.getId();
+        this.name= String.valueOf(user.getId());
+        this.username=user.getUserName();
+        this.firstname=user.getFirstName();
+        this.lastname=user.getLastName();
+        this.botState = State.START;
+        this.current_category_id=1;
+    }
+
+
 }

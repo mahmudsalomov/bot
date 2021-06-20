@@ -45,4 +45,18 @@ public class TelegramUtil {
                 .build();
     }
 
+
+    public static String parseName(User user){
+        String str=" ";
+
+        if (user.getFirstname()==null&&user.getLastname()==null){
+            if (user.getUsername()!=null) str= user.getUsername();
+        } else {
+            if (user.getFirstname()!=null)
+                str+=user.getFirstname();
+            if (user.getLastname()!=null)
+                str+= user.getLastname();
+        }
+        return "*"+str+"*";
+    }
 }

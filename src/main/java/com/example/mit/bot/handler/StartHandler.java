@@ -3,6 +3,7 @@ package com.example.mit.bot.handler;
 
 import com.example.mit.bot.State;
 import com.example.mit.model.User;
+import com.example.mit.model.profile_handler_model.ProfileEnums;
 import com.example.mit.repository.CategoryRepository;
 import com.example.mit.repository.UserRepository;
 import com.example.mit.util.ButtonModel.Col;
@@ -13,6 +14,7 @@ import com.example.mit.util.MessagesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class StartHandler implements Handler{
     @Override
     public List<PartialBotApiMethod<? extends Serializable>> handle(User user, String message) {
         System.out.println(message);
+
            if (user.getLanguage()==null){
                Row row=new Row();
                row.add("\uD83C\uDDFA\uD83C\uDDFF Uz", Language.LANGUAGE_UZ_LATIN.name());
@@ -74,6 +77,11 @@ public class StartHandler implements Handler{
     }
 
     @Override
+    public List<PartialBotApiMethod<? extends Serializable>> handle(User user, CallbackQuery callback) {
+        return null;
+    }
+
+    @Override
     public State operatedBotState() {
         return State.START;
     }
@@ -84,6 +92,7 @@ public class StartHandler implements Handler{
         callBackList.add(Language.LANGUAGE_RU.name());
         callBackList.add(Language.LANGUAGE_UZ_KRIL.name());
         callBackList.add(Language.LANGUAGE_UZ_LATIN.name());
+        callBackList.add(ProfileEnums.MY_LANGUAGE.name());
         return callBackList;
     }
 }
