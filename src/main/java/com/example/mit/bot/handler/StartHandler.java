@@ -46,59 +46,59 @@ public class StartHandler implements Handler{
     public List<PartialBotApiMethod<? extends Serializable>> handle(User user, String message) {
         System.out.println(message);
 
-           if (user.getLanguage()==null){
-               Row row=new Row();
-               row.add("\uD83C\uDDFA\uD83C\uDDFF Uz", Language.LANGUAGE_UZ_LATIN.name());
-               row.add("\uD83C\uDDFA\uD83C\uDDFF Ўз", Language.LANGUAGE_UZ_KRIL.name());
-               row.add("\uD83C\uDDF7\uD83C\uDDFA Ru", Language.LANGUAGE_RU.name());
+        if (user.getLanguage()==null){
+            Row row=new Row();
+            row.add("\uD83C\uDDFA\uD83C\uDDFF Uz", Language.LANGUAGE_UZ_LATIN.name());
+            row.add("\uD83C\uDDFA\uD83C\uDDFF Ўз", Language.LANGUAGE_UZ_KRIL.name());
+            row.add("\uD83C\uDDF7\uD83C\uDDFA Ru", Language.LANGUAGE_RU.name());
 
-               user.setBotState(State.START);
-               userRepository.save(user);
-               return List.of(createMessageTemplate(user).setText(String.format("" +
-                       "Tilni tanlang!!!\nТилни танланг!!!\nВыберите язык", user.getName()))
-                       .setReplyMarkup(row.getMarkup()));
-           }
+            user.setBotState(State.START);
+            userRepository.save(user);
+            return List.of(createMessageTemplate(user).setText(String.format("" +
+                    "Tilni tanlang!!!\nТилни танланг!!!\nВыберите язык", user.getName()))
+                    .setReplyMarkup(row.getMarkup()));
+        }
 
-           if (user.getPhone()==null){
+        if (user.getPhone()==null){
 
-               KeyboardButton button=new KeyboardButton();
-               button.setRequestContact(true);
-               button.setText("Telefon raqamni yuborish");
-               KeyboardRow row=new KeyboardRow();
-               row.add(button);
-               return List.of(createMessageTemplate(user)
+            KeyboardButton button=new KeyboardButton();
+            button.setRequestContact(true);
+            button.setText("Telefon raqamni yuborish");
+            KeyboardRow row=new KeyboardRow();
+            row.add(button);
+            return List.of(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
-                       .setText("*❗️Botdan foydalanish uchun telefon raqamingizni yuboring!*")
-                       .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row))));
+                    .setText("*❗️Botdan foydalanish uchun telefon raqamingizni yuboring!*")
+                    .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row))));
 
-           }
+        }
 
-               String msg=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.MENU_MSG_RU :
-                       user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.MENU_MSG_UZ_LATIN
-                               :MessagesInterface.MENU_MSG_UZ_KRILL;
-               String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROMOTIONS_RU :
-                       user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
-                               :MessagesInterface.BTN_PROMOTIONS_UZ_KRILL;
-               String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_BASKET_RU :
-                       user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_BASKET_UZ_LATIN
-                               :MessagesInterface.BTN_BASKET_UZ_KRILL;
-               String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PRODUCT_RU :
-                       user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PRODUCT_UZ_LATIN
-                               :MessagesInterface.BTN_PRODUCT_UZ_KRILL;
-               String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROFILE_RU :
-                       user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROFILE_LATIN
-                               :MessagesInterface.BTN_PROFILE_KRILL;
+        String msg=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.MENU_MSG_RU :
+                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.MENU_MSG_UZ_LATIN
+                        :MessagesInterface.MENU_MSG_UZ_KRILL;
+        String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROMOTIONS_RU :
+                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
+                        :MessagesInterface.BTN_PROMOTIONS_UZ_KRILL;
+        String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_BASKET_RU :
+                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_BASKET_UZ_LATIN
+                        :MessagesInterface.BTN_BASKET_UZ_KRILL;
+        String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PRODUCT_RU :
+                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PRODUCT_UZ_LATIN
+                        :MessagesInterface.BTN_PRODUCT_UZ_KRILL;
+        String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROFILE_RU :
+                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROFILE_LATIN
+                        :MessagesInterface.BTN_PROFILE_KRILL;
 
-               Col col =new Col();
-               col.add(BTN_PRODUCT,State.PRODUCT.name());
-               col.add(BTN_PROMOTIONS,State.PROMOTIONS.name());
-               col.add(BTN_BASKET,State.BASKET.name());
-               col.add(BTN_PROFILE,State.PROFILE.name());
+        Col col =new Col();
+        col.add(BTN_PRODUCT,State.PRODUCT.name());
+        col.add(BTN_PROMOTIONS,State.PROMOTIONS.name());
+        col.add(BTN_BASKET,State.BASKET.name());
+        col.add(BTN_PROFILE,State.PROFILE.name());
 
 
-               return List.of(createMessageTemplate(user).setText(String.format("" +
-                       msg, user.getName())).setReplyMarkup(col.getMarkup())
-                       );
+        return List.of(createMessageTemplate(user).setText(String.format("" +
+                msg, user.getName())).setReplyMarkup(col.getMarkup())
+        );
 
     }
 

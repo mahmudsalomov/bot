@@ -125,7 +125,7 @@ public class UpdateReceiver {
 //        System.out.println("state Callback "+query);
 //        System.out.println(handlers);
 //        handlers.forEach(item-> System.out.println(item.operatedCallBackQuery()));
-        String[] parts=query.split("_");
+        String[] parts=query.split("-");
         String finalQuery = parts[0];
         return handlers.stream()
                 .filter(h -> h.operatedCallBackQuery(user).stream()

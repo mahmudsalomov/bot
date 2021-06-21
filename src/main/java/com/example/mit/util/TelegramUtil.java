@@ -3,6 +3,7 @@ package com.example.mit.util;
 import com.example.mit.model.User;
 import com.example.mit.util.ButtonModel.InlineKeyboardModel;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 public class TelegramUtil {
@@ -14,6 +15,11 @@ public class TelegramUtil {
                 .setChatId(chatId)
                 .enableMarkdown(true);
     }
+
+    public static SendPhoto createPhotoTemplate(Integer chatId){
+        return new SendPhoto().setChatId(String.valueOf(chatId));
+    }
+
     public static InlineKeyboardButton createInlineKeyboardButton(String text, String command) {
         return new InlineKeyboardButton()
                 .setText(text)

@@ -1,6 +1,6 @@
-package com.example.mit.model.projection.uz_lat;
+package com.example.mit.model.projection.uz_kril;
 
-public interface NameUzProduct {
+public interface NameOzProduct {
     Long getId();
 
     Long getBrand_id();
@@ -9,7 +9,7 @@ public interface NameUzProduct {
 
     String getCost();
 
-    String getDescription_uz();
+    String getDescription_oz();
 
     String getImages();
 
@@ -17,7 +17,7 @@ public interface NameUzProduct {
 
     String getModel();
 
-    String getName_uz();
+    String getName_oz();
 
     String getOldPrice();
 

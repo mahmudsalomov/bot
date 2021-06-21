@@ -2,6 +2,8 @@ package com.example.mit.repository;
 
 
 import com.example.mit.model.ProductCategory;
+import com.example.mit.model.projection.ru.NameRuCategory;
+import com.example.mit.model.projection.uz_kril.NameOzCategory;
 import com.example.mit.model.projection.uz_lat.NameUzCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +21,15 @@ public interface CategoryRepository extends JpaRepository<ProductCategory,Long> 
 
     @Query(value = "select name_uz,id,temp_id,parent_id from product_category where parent_id=(select temp_id from product_category where id=:id)",
             nativeQuery = true)
-    List<NameUzCategory> findChildCategories(@Param("id") Integer id);
+    List<NameUzCategory> findChildUzCategories(@Param("id") Integer id);
+
+    @Query(value = "select name_ru,id,temp_id,parent_id from product_category where parent_id=(select temp_id from product_category where id=:id)",
+            nativeQuery = true)
+    List<NameRuCategory> findChildRuCategories(@Param("id") Integer id);
+
+    @Query(value = "select name_oz,id,temp_id,parent_id from product_category where parent_id=(select temp_id from product_category where id=:id)",
+            nativeQuery = true)
+    List<NameOzCategory> findChildOzCategories(@Param("id") Integer id);
 
     @Query(value = "select name_uz,id,temp_id,parent_id from product_category where temp_id=(select parent_id from product_category where id=:id)",nativeQuery = true)
     List<NameUzCategory> findParentId(@Param("id") Integer id);

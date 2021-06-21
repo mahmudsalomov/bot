@@ -50,7 +50,11 @@
 			<artifactId>telegram-spring-boot-starter</artifactId>
 			<version>0.22</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.telegram</groupId>
+			<artifactId>telegraph</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.vladmihalcea</groupId>
 			<artifactId>hibernate-types-52</artifactId>

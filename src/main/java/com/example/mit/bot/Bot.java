@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -37,12 +38,22 @@ public class Bot extends TelegramLongPollingBot {
                 if (response instanceof SendMessage) {
                     executeWithExceptionCheck((SendMessage) response);
                 }
+                if (response instanceof SendPhoto) {
+                    executeWithExceptionCheck((SendPhoto) response);
+                }
             });
         }
        deleteMessage(update);
     }
 
     public void executeWithExceptionCheck(SendMessage sendMessage) {
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            log.error("oops");
+        }
+    }
+    public void executeWithExceptionCheck(SendPhoto sendMessage) {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {

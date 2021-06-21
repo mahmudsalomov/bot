@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 @Entity
@@ -37,7 +38,7 @@ public class User {
 
     private String lastname;
 
-
+    private String action;
 
     private String language;
 
@@ -55,6 +56,7 @@ public class User {
         this.name= String.valueOf(chatId);
         this.botState = State.START;
         this.current_category_id=1;
+        this.action="";
     }
 
     public User(org.telegram.telegrambots.meta.api.objects.User user) {
