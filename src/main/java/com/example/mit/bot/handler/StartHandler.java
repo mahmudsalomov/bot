@@ -126,6 +126,7 @@ public class StartHandler implements Handler{
 
         }
 
+
         String msg=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.MENU_MSG_RU :
                 user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.MENU_MSG_UZ_LATIN
                         :MessagesInterface.MENU_MSG_UZ_KRILL;
