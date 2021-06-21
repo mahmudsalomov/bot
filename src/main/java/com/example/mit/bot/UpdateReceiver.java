@@ -85,6 +85,7 @@ public class UpdateReceiver {
 
 
 
+
             } else if (update.getMessage().hasContact()){
                 ProfileHandler profileHandler=new ProfileHandler(userService);
                 final int chatId = Math.toIntExact(update.getMessage().getChatId());
