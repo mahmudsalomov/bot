@@ -68,25 +68,7 @@ public class UpdateReceiver {
                 final User user = userRepository.getByChatId(chatId)
                         .orElseGet(() -> userRepository.save(new User(chatId)));
                 return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
-//                else if (message.equals("LANGUAGE_RU")||
-//                        message.equals("LANGUAGE_UZ_LATIN")||
-//                        message.equals("LANGUAGE_UZ_KRIL")){
-//                    final User user = userRepository.getByChatId(chatId)
-//                            .orElseGet(() -> userRepository.save(new User(chatId)));
-//                    user.setLanguage(message);
-////                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
-//                    userRepository.save(user);
-//                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
-//
-//                }else{
-//                    final User user = userRepository.getByChatId(chatId)
-//                            .orElseGet(() -> userRepository.save(new User(chatId)));
-//                    user.setLanguage(message);
-////                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
-//                    userRepository.save(user);
-//                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
-//
-//                }
+
 
 
 
