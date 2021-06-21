@@ -2,15 +2,16 @@ package com.example.mit.bot;
 
 
 import com.example.mit.bot.handler.Handler;
+import com.example.mit.bot.handler.ProfileHandler;
 import com.example.mit.model.User;
 import com.example.mit.repository.ProductRepository;
 import com.example.mit.repository.UserRepository;
+import com.example.mit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -26,6 +27,9 @@ public class UpdateReceiver {
     private final UserRepository userRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ProductRepository productRepository;
     public UpdateReceiver(List<Handler> handlers, UserRepository userRepository) {
         this.handlers = handlers;
@@ -39,9 +43,12 @@ public class UpdateReceiver {
             if (isMessageWithText(update)) {
                 final Message message = update.getMessage();
                 System.out.println(message);
+//                update.getMessage().getFrom();
+
+
                 final int chatId = message.getFrom().getId();
                 final User user = userRepository.getByChatId(chatId)
-                        .orElseGet(() -> userRepository.save(new User(chatId)));
+                        .orElseGet(() -> userRepository.save(new User(update.getMessage().getFrom())));
                 return getHandlerByState(user.getBotState()).handle(user, message.getText());
             }
             else if (update.hasCallbackQuery()) {
@@ -64,19 +71,26 @@ public class UpdateReceiver {
                     user.setLanguage(message);
 //                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
                     userRepository.save(user);
-                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery.getData());
+                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
 
                 }else{
                     final User user = userRepository.getByChatId(chatId)
                             .orElseGet(() -> userRepository.save(new User(chatId)));
                     user.setLanguage(message);
+//                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
                     userRepository.save(user);
-                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery.getData());
+                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
 
                 }
 
 
 
+            } else if (update.getMessage().hasContact()){
+                ProfileHandler profileHandler=new ProfileHandler(userService);
+                final int chatId = Math.toIntExact(update.getMessage().getChatId());
+                final User user = userRepository.getByChatId(chatId)
+                        .orElseGet(() -> userRepository.save(new User(chatId)));
+                return profileHandler.handle(user,update.getMessage().getContact().getPhoneNumber());
             }
 
             throw new UnsupportedOperationException();
