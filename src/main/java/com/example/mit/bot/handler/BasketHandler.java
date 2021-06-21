@@ -37,13 +37,57 @@ public class BasketHandler implements Handler{
 
     @Override
     public List<PartialBotApiMethod<? extends Serializable>> handle(User user, String message) {
-        return null;
+        List<Order> orders = orderRepository.findAllByUserAndOrderStateEquals(user,OrderState.DRAFT);
+
+        if (orders.size()==0){
+
+            Col col=new Col();
+            col.add("Bosh menyu",State.START.name());
+
+            return List.of(createMessageTemplate(user)
+//                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
+                    .setText("*❗️Savatcha bo'sh!*")
+                    .setReplyMarkup(col.getMarkup()));
+        }
+        List<ProductWithAmount> amounts = amountRepository.findAllByOrder(orders.get(0));
+
+
+        String text="";
+        Col col=new Col();
+        Row row=new Row();
+        col.add("✅Buyurtma berish!","order_"+orders.get(0).getId());
+        for (ProductWithAmount amount:amounts){
+            if (amount.getProduct().getActualPrice()!=null){
+                row.clear();
+                text+="Mahsulot:\n*"+amount.getProduct().getNameOz()+"\n"
+                        +amount.getAmount()+"x"+amount.getProduct().getActualPrice()+"="
+                        +(amount.getAmount()*Float.parseFloat(amount.getProduct().getActualPrice()))+"*\n\n";
+                row.add("❌ O'chirish!","amount_"+amount.getId());
+                row.add(amount.getProduct().getNameOz());
+                col.add(row);
+            }
+
+        }
+
+
+
+
+
+        col.add("Bosh menyu",State.START.name());
+
+        return List.of(createMessageTemplate(user)
+//                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
+                .setText(text)
+                .setReplyMarkup(col.getMarkup()));
+
     }
 
     @Override
     public List<PartialBotApiMethod<? extends Serializable>> handle(User user, CallbackQuery callback) {
 
+
         List<Order> orders = orderRepository.findAllByUserAndOrderStateEquals(user,OrderState.DRAFT);
+
         if (orders.size()==0){
 
             Col col=new Col();
@@ -55,11 +99,14 @@ public class BasketHandler implements Handler{
                     .setReplyMarkup(col.getMarkup()));
         }
 
-
         if (parseString(callback.getData()).equals("amount")){
             amountRepository.deleteById(Long.valueOf(parseInt(callback.getData())));
         }
         List<ProductWithAmount> amounts = amountRepository.findAllByOrder(orders.get(0));
+        if (amounts.size()==0){
+            orderRepository.deleteById(orders.get(0).getId());
+        }
+
 
 
 
@@ -99,8 +146,23 @@ public class BasketHandler implements Handler{
 
     @Override
     public List<String> operatedCallBackQuery(User user) {
+
         List<String> list=new ArrayList<>();
         list.add(State.BASKET.name());
+
+
+        List<Order> orders = orderRepository.findAllByUserAndOrderStateEquals(user,OrderState.DRAFT);
+
+        if (orders.size()>0){
+            List<ProductWithAmount> amounts = amountRepository.findAllByOrder(orders.get(0));
+
+            for (ProductWithAmount amount:amounts){
+                list.add("amount_"+amount.getId());
+            }
+            list.add("order_"+orders.get(0).getId());
+        }
+
+
         list.add("amount_");
         list.add("order_");
         return list;
