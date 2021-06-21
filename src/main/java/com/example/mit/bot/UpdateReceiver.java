@@ -8,6 +8,7 @@ import com.example.mit.model.User;
 import com.example.mit.repository.ProductRepository;
 import com.example.mit.repository.UserRepository;
 import com.example.mit.service.UserService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -65,10 +67,32 @@ public class UpdateReceiver {
                     userRepository.save(user);
                     return getHandlerByState(user.getBotState()).handle(user, callbackQuery.getData());
                 }
-                final User user = userRepository.getByChatId(chatId)
-                        .orElseGet(() -> userRepository.save(new User(chatId)));
-                return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
+//                else if (message.equals("PRODUCT")||
+//                message.startsWith("cat_id_")||message.startsWith("brand_id_")||message.startsWith("prod_id_")){
+//                    final User user = userRepository.getByChatId(chatId)
+//                            .orElseGet(() -> userRepository.save(new User(chatId)));
+//                    userRepository.save(user);
+//                    if (message.equals("PRODUCT")){
+//                        return getHandlerByCallBackQuery(message,user).handle(user, callbackQuery);
+//                    }else return getHandlerByCallBackQuery(message.substring(0,message.lastIndexOf("_")+1),user).handle(user,callbackQuery);
+//                }
 
+//                else if (message.equals("LANGUAGE_RU")||
+//                        message.equals("LANGUAGE_UZ_LATIN")||
+//                        message.equals("LANGUAGE_UZ_KRIL")){
+//                    final User user = userRepository.getByChatId(chatId)
+//                            .orElseGet(() -> userRepository.save(new User(chatId)));
+//                    user.setLanguage(message);
+////                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
+//                    userRepository.save(user);
+//                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
+//
+//                }else{
+                    final User user = userRepository.getByChatId(chatId)
+                            .orElseGet(() -> userRepository.save(new User(chatId)));
+                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
+//
+//                }
 
 
 
@@ -83,7 +107,7 @@ public class UpdateReceiver {
             }
 
             throw new UnsupportedOperationException();
-        } catch (UnsupportedOperationException e) {
+        } catch (UnsupportedOperationException | IOException e) {
             return Collections.emptyList();
         }
     }
@@ -101,14 +125,27 @@ public class UpdateReceiver {
 //        System.out.println("state Callback "+query);
 //        System.out.println(handlers);
 //        handlers.forEach(item-> System.out.println(item.operatedCallBackQuery()));
+        String[] parts=query.split("_");
+        String finalQuery = parts[0];
         return handlers.stream()
                 .filter(h -> h.operatedCallBackQuery(user).stream()
-                        .anyMatch(query::equals))
+                        .anyMatch(finalQuery::equals))
                 .findAny()
                 .orElseThrow(UnsupportedOperationException::new);
     }
 
     private boolean isMessageWithText(Update update) {
         return !update.hasCallbackQuery() && update.hasMessage() && update.getMessage().hasText()&& !update.getMessage().hasContact();
+    }
+
+    private String addAction(User user,String data){
+        return  user.getAction()+
+                (data.equals("PRODUCT")?"-[PRODUCT]":
+                        data.startsWith("cat_id_")?"-c["+data.substring(data.lastIndexOf("_")+1)+"]":
+                                data.startsWith("brand_id_")?"-b["+data.substring(data.lastIndexOf("_")+1)+"]":"");
+    }
+
+    private String removeAction(String data){
+        return null;
     }
 }
