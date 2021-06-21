@@ -12,4 +12,5 @@ public interface BrandRepository extends JpaRepository<ProductBrand,Long> {
     @Query(value = "select distinct prb.id, prb.name from product pr join product_brand prb on pr.brand_id=prb.id and pr.category_id=:catId", nativeQuery = true)
     List<NameBrand> findNameUz(Integer catId);
 
+
 }
