@@ -144,7 +144,7 @@ public class ProfileHandler implements Handler{
         }
 
         if (callback.getData().equals(ProfileEnums.MY_ORDERS.name())){
-            List<Order> orders = orderRepository.findAllByUser(user);
+            List<Order> orders = orderRepository.findAllByUserAndOrderStateEquals(user,OrderState.ACTIVE);
             String text="";
             orders=findActiveOrders(orders);
 

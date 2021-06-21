@@ -3,6 +3,7 @@ package com.example.mit.bot;
 
 import com.example.mit.bot.handler.Handler;
 import com.example.mit.bot.handler.ProfileHandler;
+import com.example.mit.bot.handler.StartHandler;
 import com.example.mit.model.User;
 import com.example.mit.repository.ProductRepository;
 import com.example.mit.repository.UserRepository;
@@ -61,37 +62,42 @@ public class UpdateReceiver {
                     final User user = userRepository.getByChatId(chatId)
                             .orElseGet(() -> userRepository.save(new User(chatId)));
                     user.setBotState(State.START);
+                    userRepository.save(user);
                     return getHandlerByState(user.getBotState()).handle(user, callbackQuery.getData());
                 }
-                else if (message.equals("LANGUAGE_RU")||
-                        message.equals("LANGUAGE_UZ_LATIN")||
-                        message.equals("LANGUAGE_UZ_KRIL")){
-                    final User user = userRepository.getByChatId(chatId)
-                            .orElseGet(() -> userRepository.save(new User(chatId)));
-                    user.setLanguage(message);
-//                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
-                    userRepository.save(user);
-                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
-
-                }else{
-                    final User user = userRepository.getByChatId(chatId)
-                            .orElseGet(() -> userRepository.save(new User(chatId)));
-                    user.setLanguage(message);
-//                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
-                    userRepository.save(user);
-                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
-
-                }
+                final User user = userRepository.getByChatId(chatId)
+                        .orElseGet(() -> userRepository.save(new User(chatId)));
+                return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
+//                else if (message.equals("LANGUAGE_RU")||
+//                        message.equals("LANGUAGE_UZ_LATIN")||
+//                        message.equals("LANGUAGE_UZ_KRIL")){
+//                    final User user = userRepository.getByChatId(chatId)
+//                            .orElseGet(() -> userRepository.save(new User(chatId)));
+//                    user.setLanguage(message);
+////                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
+//                    userRepository.save(user);
+//                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
+//
+//                }else{
+//                    final User user = userRepository.getByChatId(chatId)
+//                            .orElseGet(() -> userRepository.save(new User(chatId)));
+//                    user.setLanguage(message);
+////                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
+//                    userRepository.save(user);
+//                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
+//
+//                }
 
 
 
 
             } else if (update.getMessage().hasContact()){
-                ProfileHandler profileHandler=new ProfileHandler(userService);
+                StartHandler startHandler=new StartHandler(userService);
                 final int chatId = Math.toIntExact(update.getMessage().getChatId());
                 final User user = userRepository.getByChatId(chatId)
                         .orElseGet(() -> userRepository.save(new User(chatId)));
-                return profileHandler.handle(user,update.getMessage().getContact().getPhoneNumber());
+
+                return startHandler.addContact(user,update.getMessage().getContact().getPhoneNumber());
             }
 
             throw new UnsupportedOperationException();

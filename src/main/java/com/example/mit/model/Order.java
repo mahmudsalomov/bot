@@ -28,8 +28,8 @@ public class Order {
     @ManyToOne
     private User user;
 
-    @ManyToMany
-    private List<Product> products;
+//    @ManyToMany
+//    private List<Product> products;
 
     @Enumerated(EnumType.STRING)
     private OrderState orderState;
