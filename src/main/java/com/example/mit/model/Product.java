@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "product_brand")
+@Table(name = "product")
 public class Product {
     @Id
     @Column(name = "id")

@@ -163,10 +163,10 @@ public class ProductHandler implements Handler{
                 }
             }
         }
-        if (message.startsWith("addBasket-")){
-            return List.of(createMessageTemplate(user).setText(String.format("null",
-                    user.getName())));
-        }else
+//        if (message.startsWith("addBasket-")){
+//            return List.of(createMessageTemplate(user).setText(String.format("null",
+//                    user.getName())));
+//        }else
 
         return List.of(createMessageTemplate(user).setText(String.format("null",
                 user.getName())));

@@ -137,11 +137,11 @@ public class ProfileHandler implements Handler{
             }
         }
 
-        if (callback.getData().equals(ProfileEnums.MY_LANGUAGE.name())) {
-            user.setLanguage(null);
-            user=userService.save(user);
-            return startHandler.handle(user,callback.getData());
-        }
+//        if (callback.getData().equals(ProfileEnums.MY_LANGUAGE.name())) {
+//            user.setLanguage(null);
+//            user=userService.save(user);
+//            return startHandler.handle(user,callback.getData());
+//        }
 
         if (callback.getData().equals(ProfileEnums.MY_ORDERS.name())){
             List<Order> orders = orderRepository.findAllByUserAndOrderStateEquals(user,OrderState.ACTIVE);

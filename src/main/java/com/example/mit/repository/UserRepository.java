@@ -11,4 +11,5 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> getByChatId(int chatId);
+    boolean existsByChatId(Integer chatId);
 }
