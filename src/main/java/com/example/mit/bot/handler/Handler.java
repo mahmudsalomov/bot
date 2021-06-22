@@ -8,7 +8,6 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.util.List;
 
 public interface Handler {

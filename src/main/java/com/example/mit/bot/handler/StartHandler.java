@@ -12,7 +12,6 @@ import com.example.mit.util.ButtonModel.Row;
 import com.example.mit.util.KeyboardBuilder;
 import com.example.mit.util.Language;
 import com.example.mit.util.MessagesInterface;
-import com.example.mit.util.TelegramUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
