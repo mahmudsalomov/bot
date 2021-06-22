@@ -15,10 +15,7 @@ import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.example.mit.util.TelegramUtil.createMessageTemplate;
@@ -48,7 +45,7 @@ public class BasketHandler implements Handler{
             Col col=new Col();
             col.add("Bosh menyu",State.START.name());
 
-            return List.of(createMessageTemplate(user)
+            return Collections.singletonList(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
                     .setText("*❗️Savatcha bo'sh!*")
                     .setReplyMarkup(col.getMarkup()));
@@ -79,7 +76,7 @@ public class BasketHandler implements Handler{
 
         col.add("Bosh menyu",State.START.name());
 
-        return List.of(createMessageTemplate(user)
+        return Collections.singletonList(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
                 .setText(text)
                 .setReplyMarkup(col.getMarkup()));
@@ -145,7 +142,7 @@ public class BasketHandler implements Handler{
 
             Col col=new Col();
             col.add("Bosh menyu",State.START.name());
-            return List.of(createMessageTemplate(user)
+            return Collections.singletonList(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
                     .setText("*❗️Savatcha bo'sh!*")
                     .setReplyMarkup(col.getMarkup()));
@@ -189,7 +186,7 @@ public class BasketHandler implements Handler{
 
         col.add("Bosh menyu",State.START.name());
 
-        return List.of(createMessageTemplate(user)
+        return Collections.singletonList(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
                 .setText(text)
                 .setReplyMarkup(col.getMarkup()));

@@ -53,7 +53,7 @@ public class StartHandler implements Handler{
 
             user.setBotState(State.START);
             userRepository.save(user);
-            return List.of(createMessageTemplate(user).setText(String.format("" +
+            return Collections.singletonList(createMessageTemplate(user).setText(String.format("" +
                     "Tilni tanlang!!!\nТилни танланг!!!\nВыберите язык", user.getName()))
                     .setReplyMarkup(row.getMarkup()));
         }
@@ -65,7 +65,7 @@ public class StartHandler implements Handler{
             button.setText("Telefon raqamni yuborish");
             KeyboardRow row=new KeyboardRow();
             row.add(button);
-            return List.of(createMessageTemplate(user)
+            return Collections.singletonList(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
                     .setText("*❗️Botdan foydalanish uchun telefon raqamingizni yuboring!*")
                     .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row))));
@@ -95,7 +95,7 @@ public class StartHandler implements Handler{
         col.add(BTN_PROFILE,State.PROFILE.name());
 
 
-        return List.of(createMessageTemplate(user).setText(String.format("" +
+        return Collections.singletonList(createMessageTemplate(user).setText(String.format("" +
                 msg, user.getName())).setReplyMarkup(col.getMarkup())
         );
 
@@ -118,7 +118,7 @@ public class StartHandler implements Handler{
             button.setText("Telefon raqamni yuborish");
             KeyboardRow row=new KeyboardRow();
             row.add(button);
-            return List.of(createMessageTemplate(user)
+            return Collections.singletonList(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
                     .setText("*❗️Botdan foydalanish uchun telefon raqamingizni yuboring!*")
                     .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row))));
@@ -149,7 +149,7 @@ public class StartHandler implements Handler{
         col.add(BTN_PROFILE,State.PROFILE.name());
 
 
-        return List.of(createMessageTemplate(user).setText(String.format("" +
+        return Collections.singletonList(createMessageTemplate(user).setText(String.format("" +
                 msg, user.getName())).setReplyMarkup(col.getMarkup())
         );
     }
@@ -180,7 +180,7 @@ public class StartHandler implements Handler{
         col.add(BTN_PROFILE,State.PROFILE.name());
 
 
-        return List.of(createMessageTemplate(user).setText(String.format("" +
+        return Collections.singletonList(createMessageTemplate(user).setText(String.format("" +
                 msg, user.getName())).setReplyMarkup(col.getMarkup())
         );
     }

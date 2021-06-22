@@ -26,6 +26,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +61,7 @@ public class ProductHandler implements Handler{
                 });
 //            col.add("\uD83D\uDD19 Orqaga","back_to");
             col.add("\uD83C\uDFD8 Bosh sahifa","EXIT");
-                return List.of(createMessageTemplate(user).setText(String.format(msg,
+                return Collections.singletonList(createMessageTemplate(user).setText(String.format(msg,
                         user.getName())).setReplyMarkup(col.getMarkup())
                 );
 
@@ -83,7 +84,7 @@ public class ProductHandler implements Handler{
             });
             col.add("\uD83D\uDD19 Orqaga","back_to");
             col.add("\uD83C\uDFD8 Bosh sahifa","EXIT");
-            return List.of(createMessageTemplate(user).setText(String.format(msg,
+            return Collections.singletonList(createMessageTemplate(user).setText(String.format(msg,
                     user.getName())).setReplyMarkup(col.getMarkup())
             );
 
@@ -114,7 +115,7 @@ public class ProductHandler implements Handler{
             }
             col.add("\uD83D\uDD19 Orqaga","back_to");
             col.add("\uD83C\uDFD8 Bosh sahifa","PRODUCT");
-            return List.of(createMessageTemplate(user).setText(String.format(message,
+            return Collections.singletonList(createMessageTemplate(user).setText(String.format(message,
                     user.getName())).setReplyMarkup(col.getMarkup())
             );
         }else if (callback.getData().startsWith("brandId-"))
@@ -130,7 +131,7 @@ public class ProductHandler implements Handler{
             });
             col.add("\uD83D\uDD19 Orqaga","back_to");
             col.add("\uD83C\uDFD8 Bosh sahifa","PRODUCT");
-            return List.of(createMessageTemplate(user).setText(String.format("message"+id,
+            return Collections.singletonList(createMessageTemplate(user).setText(String.format("message"+id,
                     user.getName())).setReplyMarkup(col.getMarkup()));
         }else
         {
@@ -155,7 +156,7 @@ public class ProductHandler implements Handler{
                 URL url=new URL("https://assets.asaxiy.uz/product/main_image/desktop/"+product.getMain_image());
                 URLConnection connection=url.openConnection();
                 try {
-                    return List.of(createPhotoTemplate(user.getChatId()).setPhoto(
+                    return Collections.singletonList(createPhotoTemplate(user.getChatId()).setPhoto(
                             "Photo",connection.getInputStream()
                     ).setCaption(product.getName_oz()).setReplyMarkup(col.getMarkup()));
                 } catch (FileNotFoundException e) {
@@ -168,7 +169,7 @@ public class ProductHandler implements Handler{
 //                    user.getName())));
 //        }else
 
-        return List.of(createMessageTemplate(user).setText(String.format("null",
+        return Collections.singletonList(createMessageTemplate(user).setText(String.format("null",
                 user.getName())));
     }
 

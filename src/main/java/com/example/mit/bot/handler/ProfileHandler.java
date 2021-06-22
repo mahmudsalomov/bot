@@ -74,7 +74,7 @@ public class ProfileHandler implements Handler{
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.EXIT.name()),ProfileEnums.EXIT.name());
 //
-                return List.of(createMessageTemplate(user)
+                return Collections.singletonList(createMessageTemplate(user)
                         .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+TelegramUtil.parseName(user)+"\n*"+user.getPhone()+"*")
                         .setReplyMarkup(col.getMarkup()));
 
@@ -84,7 +84,7 @@ public class ProfileHandler implements Handler{
                 button.setText("Telefon raqamni yuborish");
                 KeyboardRow row=new KeyboardRow();
                 row.add(button);
-                return List.of(createMessageTemplate(user)
+                return Collections.singletonList(createMessageTemplate(user)
                         .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+TelegramUtil.parseName(user))
                         .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row))));
             }
@@ -96,7 +96,7 @@ public class ProfileHandler implements Handler{
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_LANGUAGE.name()),ProfileEnums.MY_LANGUAGE.name());
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.EXIT.name()),ProfileEnums.EXIT.name());
-            return List.of(createMessageTemplate(user)
+            return Collections.singletonList(createMessageTemplate(user)
                     .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+TelegramUtil.parseName(user)+"\n*"+user.getPhone()+"*")
                     .setReplyMarkup(col.getMarkup()));
 
@@ -120,7 +120,7 @@ public class ProfileHandler implements Handler{
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.EXIT.name()),ProfileEnums.EXIT.name());
 //
-                return List.of(createMessageTemplate(user)
+                return Collections.singletonList(createMessageTemplate(user)
                         .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+TelegramUtil.parseName(user)+"\n*"+user.getPhone()+"*")
                         .setReplyMarkup(col.getMarkup()));
 
@@ -130,7 +130,7 @@ public class ProfileHandler implements Handler{
                 button.setText("Telefon raqamni yuborish");
                 KeyboardRow row=new KeyboardRow();
                 row.add(button);
-                return List.of(createMessageTemplate(user)
+                return Collections.singletonList(createMessageTemplate(user)
                         .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+TelegramUtil.parseName(user))
                         .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row))));
             }
@@ -157,7 +157,7 @@ public class ProfileHandler implements Handler{
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_LANGUAGE.name()),ProfileEnums.MY_LANGUAGE.name());
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.EXIT.name()),ProfileEnums.EXIT.name());
-            return List.of(createMessageTemplate(user)
+            return Collections.singletonList(createMessageTemplate(user)
                     .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+TelegramUtil.parseName(user)+"\n*"+user.getPhone()+"*")
                     .setReplyMarkup(col.getMarkup()));
 
