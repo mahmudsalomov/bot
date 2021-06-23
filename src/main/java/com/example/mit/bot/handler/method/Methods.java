@@ -137,4 +137,8 @@ public class Methods {
             return productDtoList;
         }
     }
+
+    public ProductDto productForLang(Long id,String lang){
+        return null;
+    }
 }

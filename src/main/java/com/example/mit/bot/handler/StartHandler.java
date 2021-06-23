@@ -68,7 +68,7 @@ public class StartHandler implements Handler{
             return Collections.singletonList(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
                     .setText("*❗️Botdan foydalanish uchun telefon raqamingizni yuboring!*")
-                    .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row))));
+                    .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row)).setResizeKeyboard(true)));
 
         }
 
@@ -121,7 +121,7 @@ public class StartHandler implements Handler{
             return Collections.singletonList(createMessageTemplate(user)
 //                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
                     .setText("*❗️Botdan foydalanish uchun telefon raqamingizni yuboring!*")
-                    .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row))));
+                    .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row)).setResizeKeyboard(true)));
 
         }
 

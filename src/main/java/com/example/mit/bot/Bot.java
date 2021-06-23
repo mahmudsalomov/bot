@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -79,7 +80,12 @@ public class Bot extends TelegramLongPollingBot {
                 }
                 if (response instanceof SendPhoto) {
                     executeWithExceptionCheck((SendPhoto) response);
+                }else if (response instanceof EditMessageReplyMarkup){
+                    executeWithExceptionCheck((EditMessageReplyMarkup) response);
+                }else if (response instanceof AnswerCallbackQuery){
+                    executeWithExceptionCheck((AnswerCallbackQuery) response);
                 }
+
             });
         }
 //       deleteMessage(update);
@@ -92,6 +98,23 @@ public class Bot extends TelegramLongPollingBot {
             log.error("oops");
         }
     }
+
+    public void executeWithExceptionCheck(EditMessageReplyMarkup sendMessage) {
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            log.error("oops");
+        }
+    }
+
+    public void executeWithExceptionCheck(AnswerCallbackQuery sendMessage) {
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            log.error("oops");
+        }
+    }
+
     public void executeWithExceptionCheck(SendPhoto sendMessage) {
         try {
             execute(sendMessage);

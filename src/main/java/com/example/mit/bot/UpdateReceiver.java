@@ -52,9 +52,12 @@ public class UpdateReceiver {
                 final int chatId = message.getFrom().getId();
                 final User user = userRepository.getByChatId(chatId)
                         .orElseGet(() -> userRepository.save(new User(update.getMessage().getFrom())));
+                user.setAction(" ");
+                userRepository.save(user);
                 return getHandlerByState(user.getBotState()).handle(user, message.getText());
             }
             else if (update.hasCallbackQuery()) {
+
                 System.out.println(update.getCallbackQuery().getData());
                 final CallbackQuery callbackQuery = update.getCallbackQuery();
                 final int chatId = callbackQuery.getFrom().getId();
@@ -64,6 +67,7 @@ public class UpdateReceiver {
                     final User user = userRepository.getByChatId(chatId)
                             .orElseGet(() -> userRepository.save(new User(chatId)));
                     user.setBotState(State.START);
+                    user.setAction(" ");
                     userRepository.save(user);
                     return getHandlerByState(user.getBotState()).handle(user, callbackQuery.getData());
                 }
@@ -88,9 +92,13 @@ public class UpdateReceiver {
 //                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
 //
 //                }else{
+
                     final User user = userRepository.getByChatId(chatId)
                             .orElseGet(() -> userRepository.save(new User(chatId)));
-                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
+                user.setAction(addAction(user, message).trim());
+                System.out.println(user.getAction());
+                User save = userRepository.save(user);
+                return getHandlerByCallBackQuery(callbackQuery.getData(),save).handle(save, callbackQuery);
 //
 //                }
 
@@ -139,13 +147,25 @@ public class UpdateReceiver {
     }
 
     private String addAction(User user,String data){
-        return  user.getAction()+
-                (data.equals("PRODUCT")?"-[PRODUCT]":
-                        data.startsWith("cat_id_")?"-c["+data.substring(data.lastIndexOf("_")+1)+"]":
-                                data.startsWith("brand_id_")?"-b["+data.substring(data.lastIndexOf("_")+1)+"]":"");
+        String[] split = data.split("-");
+        if (user.getAction().equals("")){
+           switch (split[0]){
+               case "PRODUCT": return "-c-1";
+               case "catId": return "-c-"+split[1];
+               case "brandId": return "-b-"+split[1];
+               case "prodId": return "-p-"+split[1];
+               default:return " ";
+           }
+       }else  {
+            switch (split[0]){
+                case "PRODUCT": return user.getAction()+"-c-1";
+                case "catId": return user.getAction()+"-c-"+split[1];
+                case "brandId": return user.getAction()+"-b-"+split[1];
+                case "prodId": return user.getAction()+"-p-"+split[1];
+                default:return user.getAction()+" ";
+            }
+       }
     }
 
-    private String removeAction(String data){
-        return null;
-    }
+
 }

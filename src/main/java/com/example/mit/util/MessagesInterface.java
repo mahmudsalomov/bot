@@ -21,7 +21,9 @@ public interface MessagesInterface {
     String BTN_PROFILE_LATIN="\uD83D\uDC64 Profil";
     String BTN_PROFILE_KRILL="\uD83D\uDC64 Профил";
 
-
+    String ERROR_MESSAGE_UZ_LATIN="Ma'lumotlar oqimida xatolik yuz berdi!!! Botni qayta ishga tushirish uchun /start buyrug'ini yuboring";
+    String ERROR_MESSAGE_UZ_KRILL="Ма'лумотлар оқимида хатолик юз берди!!! Ботни қайта ишга тушириш учун /start буйруғини юборинг";
+    String ERROR_MESSAGE_UZ_RU="Произошла ошибка в потоке данных !!! Отправьте команду /start для перезапуска бота";
 
 
 }
