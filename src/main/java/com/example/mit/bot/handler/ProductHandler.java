@@ -88,19 +88,19 @@ public class ProductHandler implements Handler{
 
             user.setCurrent_category_id(id);
             user=userRepository.save(user);
-            if (childUzCategories.size()>0){
+            List<CategoryDto> categoryDtoList = methods.categoryForLang(id, user);
+            if (categoryDtoList.size()>0){
+                return category(id,user);
+//                for (CategoryDto categoryDto : categoryDtoList) {
+//                    System.out.println(categoryDto.getId());
+//                    col.add(categoryDto.getName(), "catId-"+categoryDto.getId());
+//                }
+//                Optional<ProductCategory> parent = categoryRepository.findParentByCategoryId(Long.valueOf(user.getCurrent_category_id()));
+////                col.add("\uD83D\uDD19 Orqaga","catId-"+user.getCurrent_category_id());
+//                parent.ifPresent(productCategory -> col.add("\uD83D\uDD19 Orqaga", "catId-" + productCategory.getId()));
+//                col.add("\uD83C\uDFD8 Bosh sahifa","EXIT");
+//                return Collections.singletonList(createMessageTemplate(user).setText("Kategoriyalar").setReplyMarkup(col.getMarkup()));
 
-
-                for (NameUzCategory childUzCategory : childUzCategories) {
-                    System.out.println(childUzCategory.getId());
-                    col.add(childUzCategory.getName_uz(), "catId-"+childUzCategory.getId());
-                }
-                Optional<ProductCategory> parent = categoryRepository.findParentByCategoryId(Long.valueOf(user.getCurrent_category_id()));
-//                col.add("\uD83D\uDD19 Orqaga","catId-"+user.getCurrent_category_id());
-
-                parent.ifPresent(productCategory -> col.add("\uD83D\uDD19 Orqaga", "catId-" + productCategory.getId()));
-                col.add("\uD83C\uDFD8 Bosh sahifa","EXIT");
-                return Collections.singletonList(createMessageTemplate(user).setText("Kategoriyalar").setReplyMarkup(col.getMarkup()));
             }
             else {
 
@@ -241,18 +241,19 @@ public class ProductHandler implements Handler{
 
 
         if (message.equals(State.PRODUCT.name())){
-            List<NameUzProduct> nameUzProducts = productRepository.allUzByCategoryId(1L);
-            List<NameUzCategory> childUzCategories = categoryRepository.findChildUzCategories(1);
-            System.out.println(childUzCategories);
+
             user.setCurrent_category_id(1);
             user=userRepository.save(user);
 
-            for (NameUzCategory childUzCategory : childUzCategories) {
-                System.out.println(childUzCategory.getId());
-                col.add(childUzCategory.getName_uz(), "catId-"+childUzCategory.getId());
-            }
-            col.add("\uD83C\uDFD8 Bosh sahifa","EXIT");
-            return Collections.singletonList(createMessageTemplate(user).setText("Kategoriyalar").setReplyMarkup(col.getMarkup()));
+            return category(1,user);
+
+//            List<CategoryDto> categoryDtoList = methods.categoryForLang(1, user);
+//            for (CategoryDto categoryDto : categoryDtoList) {
+//                System.out.println(categoryDto.getId());
+//                col.add(categoryDto.getName(), "catId-"+categoryDto.getId());
+//            }
+//            col.add("\uD83C\uDFD8 Bosh sahifa","EXIT");
+//            return Collections.singletonList(createMessageTemplate(user).setText("Kategoriyalar").setReplyMarkup(col.getMarkup()));
 
 
         }
@@ -436,6 +437,22 @@ public class ProductHandler implements Handler{
         return idList;
     }
 
+
+    public List<PartialBotApiMethod<? extends Serializable>> category(Integer id,User user){
+        Col col=new Col();
+        List<CategoryDto> categoryDtoList = methods.categoryForLang(id, user);
+        for (CategoryDto categoryDto : categoryDtoList) {
+            System.out.println(categoryDto.getId());
+            col.add(categoryDto.getName(), "catId-"+categoryDto.getId());
+        }
+        Optional<ProductCategory> parent = categoryRepository.findParentByCategoryId(Long.valueOf(user.getCurrent_category_id()));
+//                col.add("\uD83D\uDD19 Orqaga","catId-"+user.getCurrent_category_id());
+        parent.ifPresent(productCategory -> col.add("\uD83D\uDD19 Orqaga", "catId-" + productCategory.getId()));
+        col.add("\uD83C\uDFD8 Bosh sahifa","EXIT");
+        return Collections.singletonList(createMessageTemplate(user).setText("Kategoriyalar").setReplyMarkup(col.getMarkup()));
+
+    }
+
     public static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
@@ -445,10 +462,7 @@ public class ProductHandler implements Handler{
         }
     }
 
-    private String removeAction(String data){
-        String[] split = data.split("-");
-        return null;
-    }
+
 
     public Integer parseInt(String str){
         try {

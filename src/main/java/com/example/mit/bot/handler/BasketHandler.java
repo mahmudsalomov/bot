@@ -56,7 +56,7 @@ public class BasketHandler implements Handler{
         String text="";
         Col col=new Col();
         Row row=new Row();
-        col.add("✅Buyurtma berish!","order_"+orders.get(0).getId());
+        col.add("✅Buyurtma berish!","order-"+orders.get(0).getId());
         for (ProductWithAmount amount:amounts){
             if (amount.getProduct().getActualPrice()!=null){
                 row.clear();
