@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -41,6 +42,7 @@ public class UpdateReceiver {
 
     @Transactional
     public List<PartialBotApiMethod<? extends Serializable>> handle(Update update) {
+
 
         try {
             if (isMessageWithText(update)) {
@@ -71,34 +73,14 @@ public class UpdateReceiver {
                     userRepository.save(user);
                     return getHandlerByState(user.getBotState()).handle(user, callbackQuery.getData());
                 }
-//                else if (message.equals("PRODUCT")||
-//                message.startsWith("cat_id_")||message.startsWith("brand_id_")||message.startsWith("prod_id_")){
-//                    final User user = userRepository.getByChatId(chatId)
-//                            .orElseGet(() -> userRepository.save(new User(chatId)));
-//                    userRepository.save(user);
-//                    if (message.equals("PRODUCT")){
-//                        return getHandlerByCallBackQuery(message,user).handle(user, callbackQuery);
-//                    }else return getHandlerByCallBackQuery(message.substring(0,message.lastIndexOf("_")+1),user).handle(user,callbackQuery);
-//                }
 
-//                else if (message.equals("LANGUAGE_RU")||
-//                        message.equals("LANGUAGE_UZ_LATIN")||
-//                        message.equals("LANGUAGE_UZ_KRIL")){
-//                    final User user = userRepository.getByChatId(chatId)
-//                            .orElseGet(() -> userRepository.save(new User(chatId)));
-//                    user.setLanguage(message);
-////                    user.setCurrent_category_id(Integer.valueOf(update.getCallbackQuery().getData()));
-//                    userRepository.save(user);
-//                    return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
-//
-//                }else{
 
                     final User user = userRepository.getByChatId(chatId)
                             .orElseGet(() -> userRepository.save(new User(chatId)));
-                user.setAction(addAction(user, message).trim());
-                System.out.println(user.getAction());
-                User save = userRepository.save(user);
-                return getHandlerByCallBackQuery(callbackQuery.getData(),save).handle(save, callbackQuery);
+//                user.setAction(addAction(user, message).trim());
+//                System.out.println(user.getAction());
+//                User save = userRepository.save(user);
+                return getHandlerByCallBackQuery(callbackQuery.getData(),user).handle(user, callbackQuery);
 //
 //                }
 

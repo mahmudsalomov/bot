@@ -91,8 +91,10 @@ public class BasketHandler implements Handler{
         if (parseString(callback.getData()).equals("addBasket")){
 
             Integer id=parseInt(callback.getData());
+            int count = Integer.parseInt(parseString3th(callback.getData()));
             System.out.println("ID = "+id);
             System.out.println("callback = "+callback.getData());
+            System.out.println("count = "+count);
             Optional<Product> byId = productRepository.findById(Long.valueOf(id));
 
             if (byId.isPresent()){
@@ -105,7 +107,7 @@ public class BasketHandler implements Handler{
                     order=orderRepository.save(order);
                     ProductWithAmount productWithAmount= ProductWithAmount
                             .builder()
-                            .amount(1)
+                            .amount(count)
                             .order(order)
                             .product(byId.get())
                             .build();
@@ -114,14 +116,14 @@ public class BasketHandler implements Handler{
                     if (amountRepository.existsByOrderAndProduct(orders.get(0),byId.get())){
 
                         ProductWithAmount withAmount = amountRepository.findByOrderAndProduct(orders.get(0), byId.get());
-                        withAmount.setAmount(withAmount.getAmount()+1);
+                        withAmount.setAmount(withAmount.getAmount()+count);
                         amountRepository.save(withAmount);
 
                     }
                     else {
                         ProductWithAmount productWithAmount= ProductWithAmount
                                 .builder()
-                                .amount(1)
+                                .amount(count)
                                 .order(orders.get(0))
                                 .product(byId.get())
                                 .build();
@@ -247,6 +249,16 @@ public class BasketHandler implements Handler{
         try {
             String[] parts = str.split("-");
             return parts[0];
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String parseString3th(String str){
+        try {
+            String[] parts = str.split("-");
+            return parts[2];
         }catch (Exception e){
             e.printStackTrace();
             return "";

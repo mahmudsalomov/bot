@@ -33,7 +33,7 @@ public class Methods {
 
     public List<CategoryDto> categoryForLang(Integer id, User user){
         List<CategoryDto> categoryDtoList = new ArrayList<>();
-        if (user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())){
+        if (user.getLanguage().equals(Language.LANGUAGE_OZ)){
             List<NameUzCategory> childCategories = categoryRepository.findChildUzCategories(id);
             childCategories.forEach(category->{
                 CategoryDto categoryDto=new CategoryDto();
@@ -45,7 +45,7 @@ public class Methods {
             });
             return categoryDtoList;
         }
-        else if (user.getLanguage().equals(Language.LANGUAGE_RU.name())){
+        else if (user.getLanguage().equals(Language.LANGUAGE_RU)){
             List<NameRuCategory> childCategories = categoryRepository.findChildRuCategories(id);
             childCategories.forEach(category->{
                 CategoryDto categoryDto=new CategoryDto();
@@ -73,7 +73,7 @@ public class Methods {
 
     public List<ProductDto> productForLang(Long id, User user){
         List<ProductDto> productDtoList=new ArrayList<>();
-        if (user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())){
+        if (user.getLanguage().equals(Language.LANGUAGE_OZ)){
             String action = user.getAction();
             Integer cat_id=Integer.valueOf(action.substring(action.lastIndexOf("c[")+1,action.indexOf("-b[")));
             List<NameUzProduct> nameUzProducts = productRepository.allUzByBrandId(id,cat_id);
@@ -94,7 +94,7 @@ public class Methods {
             });
             return productDtoList;
         }
-        else if (user.getLanguage().equals(Language.LANGUAGE_RU.name())){
+        else if (user.getLanguage().equals(Language.LANGUAGE_RU)){
             String action = user.getAction();
             Integer cat_id=Integer.valueOf(action.substring(action.lastIndexOf("c[")+1,action.indexOf("-b[")));
             List<NameRuProduct> nameUzProducts = productRepository.allRuByBrandId(id,cat_id);

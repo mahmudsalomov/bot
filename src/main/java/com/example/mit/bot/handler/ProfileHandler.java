@@ -71,7 +71,7 @@ public class ProfileHandler implements Handler{
                 Col col = new Col();
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_ORDERS.name()),ProfileEnums.MY_ORDERS.name());
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_LANGUAGE.name()),ProfileEnums.MY_LANGUAGE.name());
-                col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
+//                col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.EXIT.name()),ProfileEnums.EXIT.name());
 //
                 return Collections.singletonList(createMessageTemplate(user)
@@ -94,7 +94,7 @@ public class ProfileHandler implements Handler{
             Col col = new Col();
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_ORDERS.name()),ProfileEnums.MY_ORDERS.name());
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_LANGUAGE.name()),ProfileEnums.MY_LANGUAGE.name());
-            col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
+//            col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.EXIT.name()),ProfileEnums.EXIT.name());
             return Collections.singletonList(createMessageTemplate(user)
                     .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+TelegramUtil.parseName(user)+"\n*"+user.getPhone()+"*")
@@ -117,7 +117,7 @@ public class ProfileHandler implements Handler{
                 Col col = new Col();
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_ORDERS.name()),ProfileEnums.MY_ORDERS.name());
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_LANGUAGE.name()),ProfileEnums.MY_LANGUAGE.name());
-                col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
+//                col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
                 col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.EXIT.name()),ProfileEnums.EXIT.name());
 //
                 return Collections.singletonList(createMessageTemplate(user)
@@ -136,11 +136,11 @@ public class ProfileHandler implements Handler{
             }
         }
 
-//        if (callback.getData().equals(ProfileEnums.MY_LANGUAGE.name())) {
-//            user.setLanguage(null);
-//            user=userService.save(user);
-//            return startHandler.handle(user,callback.getData());
-//        }
+        if (callback.getData().equals(ProfileEnums.MY_LANGUAGE.name())) {
+            user.setLanguage(null);
+            user=userService.save(user);
+            return startHandler.handle(user,callback.getData());
+        }
 
         if (callback.getData().equals(ProfileEnums.MY_ORDERS.name())){
             List<Order> orders = orderRepository.findAllByUserAndOrderStateEquals(user,OrderState.ACTIVE);
@@ -155,7 +155,7 @@ public class ProfileHandler implements Handler{
             Col col = new Col();
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_ORDERS.name()),ProfileEnums.MY_ORDERS.name());
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_LANGUAGE.name()),ProfileEnums.MY_LANGUAGE.name());
-            col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
+//            col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.MY_REGION.name()),ProfileEnums.MY_REGION.name());
             col.add(ProfileMenuStrings.map_oz.get(ProfileEnums.EXIT.name()),ProfileEnums.EXIT.name());
             return Collections.singletonList(createMessageTemplate(user)
                     .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+TelegramUtil.parseName(user)+"\n*"+user.getPhone()+"*")

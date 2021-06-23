@@ -57,13 +57,20 @@ public class Bot extends TelegramLongPollingBot {
                         if (user.isPresent()&&user.get().getPhone()!=null&&user.get().getLanguage()!=null){
                             long message_id = update.getCallbackQuery().getMessage().getMessageId();
                             long chat_id = update.getCallbackQuery().getMessage().getChatId();
-                            EditMessageText new_message = new EditMessageText()
-                                    .setChatId(chat_id)
-                                    .setMessageId(toIntExact(message_id))
-                                    .enableMarkdown(true)
-                                    .setReplyMarkup((InlineKeyboardMarkup) ((SendMessage) response).getReplyMarkup())
-                                    .setText(((SendMessage) response).getText());
+
                             try {
+                                InlineKeyboardMarkup replyMarkup=null;
+                                try {
+                                    replyMarkup = (InlineKeyboardMarkup) ((SendMessage) response).getReplyMarkup();
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                EditMessageText new_message = new EditMessageText()
+                                        .setChatId(chat_id)
+                                        .setMessageId(toIntExact(message_id))
+                                        .enableMarkdown(true)
+                                        .setReplyMarkup(replyMarkup)
+                                        .setText(((SendMessage) response).getText());
                                 execute(new_message);
                             } catch (TelegramApiException e) {
                                 executeWithExceptionCheck((SendMessage) response);

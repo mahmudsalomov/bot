@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<ProductCategory,Long> {
+
+    @Query(value = "select * from product_category where temp_id = (select parent_id from product_category where id=:id)",nativeQuery = true)
+    Optional<ProductCategory> findParentByCategoryId(Long id);
+
     List<ProductCategory> findAllByParentIdIsNull();
     @Query(value = "select name_uz,id,temp_id,parent_id from product_category where parent_id IS NULL and temp_id IS NOT NULL",nativeQuery = true)
     List<NameUzCategory> findAllNameUz();

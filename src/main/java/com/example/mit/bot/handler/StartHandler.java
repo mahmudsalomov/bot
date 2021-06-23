@@ -47,9 +47,9 @@ public class StartHandler implements Handler{
 
         if (user.getLanguage()==null){
             Row row=new Row();
-            row.add("\uD83C\uDDFA\uD83C\uDDFF Uz", Language.LANGUAGE_UZ_LATIN.name());
-            row.add("\uD83C\uDDFA\uD83C\uDDFF Ўз", Language.LANGUAGE_UZ_KRIL.name());
-            row.add("\uD83C\uDDF7\uD83C\uDDFA Ru", Language.LANGUAGE_RU.name());
+            row.add("\uD83C\uDDFA\uD83C\uDDFF Uz", Language.LANGUAGE_OZ);
+            row.add("\uD83C\uDDFA\uD83C\uDDFF Ўз", Language.LANGUAGE_UZ);
+            row.add("\uD83C\uDDF7\uD83C\uDDFA Ru", Language.LANGUAGE_RU);
 
             user.setBotState(State.START);
             userRepository.save(user);
@@ -72,20 +72,20 @@ public class StartHandler implements Handler{
 
         }
 
-        String msg=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.MENU_MSG_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.MENU_MSG_UZ_LATIN
+        String msg=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.MENU_MSG_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.MENU_MSG_UZ_LATIN
                         :MessagesInterface.MENU_MSG_UZ_KRILL;
-        String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROMOTIONS_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
+        String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PROMOTIONS_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
                         :MessagesInterface.BTN_PROMOTIONS_UZ_KRILL;
-        String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_BASKET_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_BASKET_UZ_LATIN
+        String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_BASKET_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_BASKET_UZ_LATIN
                         :MessagesInterface.BTN_BASKET_UZ_KRILL;
-        String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PRODUCT_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PRODUCT_UZ_LATIN
+        String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PRODUCT_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PRODUCT_UZ_LATIN
                         :MessagesInterface.BTN_PRODUCT_UZ_KRILL;
-        String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROFILE_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROFILE_LATIN
+        String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PROFILE_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PROFILE_LATIN
                         :MessagesInterface.BTN_PROFILE_KRILL;
 
         Col col =new Col();
@@ -106,40 +106,84 @@ public class StartHandler implements Handler{
 
         System.out.println("START "+callback.getData());
 
-        if (callback.getData().equals("LANGUAGE_RU")||
-                callback.getData().equals("LANGUAGE_UZ_LATIN")||
-                callback.getData().equals("LANGUAGE_UZ_KRIL")){
+
+
+
+
+        if (callback.getData().equals(Language.LANGUAGE_RU)||
+                callback.getData().equals(Language.LANGUAGE_OZ)||
+                callback.getData().equals(Language.LANGUAGE_UZ)){
 
             user.setLanguage(callback.getData());
             userRepository.save(user);
 
-            KeyboardButton button=new KeyboardButton();
-            button.setRequestContact(true);
-            button.setText("Telefon raqamni yuborish");
-            KeyboardRow row=new KeyboardRow();
-            row.add(button);
-            return Collections.singletonList(createMessageTemplate(user)
-//                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
-                    .setText("*❗️Botdan foydalanish uchun telefon raqamingizni yuboring!*")
-                    .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row)).setResizeKeyboard(true)));
+            if (user.getLanguage()==null){
+                Row row=new Row();
+                row.add("\uD83C\uDDFA\uD83C\uDDFF Uz", Language.LANGUAGE_OZ);
+                row.add("\uD83C\uDDFA\uD83C\uDDFF Ўз", Language.LANGUAGE_UZ);
+                row.add("\uD83C\uDDF7\uD83C\uDDFA Ru", Language.LANGUAGE_RU);
 
+                user.setBotState(State.START);
+                userRepository.save(user);
+                return Collections.singletonList(createMessageTemplate(user).setText(String.format("" +
+                        "Tilni tanlang!!!\nТилни танланг!!!\nВыберите язык", user.getName()))
+                        .setReplyMarkup(row.getMarkup()));
+            }
+            if (user.getPhone()==null){
+                KeyboardButton button=new KeyboardButton();
+                button.setRequestContact(true);
+                button.setText("Telefon raqamni yuborish");
+                KeyboardRow row=new KeyboardRow();
+                row.add(button);
+                return Collections.singletonList(createMessageTemplate(user)
+//                    .setText(MessagesInterface.BTN_PROFILE_LATIN+"\n"+ TelegramUtil.parseName(user))
+                        .setText("*❗️Botdan foydalanish uchun telefon raqamingizni yuboring!*")
+                        .setReplyMarkup(new ReplyKeyboardMarkup(Collections.singletonList(row)).setResizeKeyboard(true)));
+            }
+
+
+            String msg=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.MENU_MSG_RU :
+                    user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.MENU_MSG_UZ_LATIN
+                            :MessagesInterface.MENU_MSG_UZ_KRILL;
+            String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PROMOTIONS_RU :
+                    user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
+                            :MessagesInterface.BTN_PROMOTIONS_UZ_KRILL;
+            String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_BASKET_RU :
+                    user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_BASKET_UZ_LATIN
+                            :MessagesInterface.BTN_BASKET_UZ_KRILL;
+            String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PRODUCT_RU :
+                    user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PRODUCT_UZ_LATIN
+                            :MessagesInterface.BTN_PRODUCT_UZ_KRILL;
+            String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PROFILE_RU :
+                    user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PROFILE_LATIN
+                            :MessagesInterface.BTN_PROFILE_KRILL;
+            Col col =new Col();
+            col.add(BTN_PRODUCT,State.PRODUCT.name());
+            col.add(BTN_PROMOTIONS,State.PROMOTIONS.name());
+            col.add(BTN_BASKET,State.BASKET.name());
+            col.add(BTN_PROFILE,State.PROFILE.name());
+
+
+            return Collections.singletonList(createMessageTemplate(user).setText(String.format("" +
+                    msg, user.getName())).setReplyMarkup(col.getMarkup())
+            );
         }
 
 
-        String msg=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.MENU_MSG_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.MENU_MSG_UZ_LATIN
+        String msg=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.MENU_MSG_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.MENU_MSG_UZ_LATIN
                         :MessagesInterface.MENU_MSG_UZ_KRILL;
-        String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROMOTIONS_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
+        String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PROMOTIONS_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
                         :MessagesInterface.BTN_PROMOTIONS_UZ_KRILL;
-        String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_BASKET_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_BASKET_UZ_LATIN
+        String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_BASKET_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_BASKET_UZ_LATIN
                         :MessagesInterface.BTN_BASKET_UZ_KRILL;
-        String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PRODUCT_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PRODUCT_UZ_LATIN
+        String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PRODUCT_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PRODUCT_UZ_LATIN
                         :MessagesInterface.BTN_PRODUCT_UZ_KRILL;
-        String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROFILE_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROFILE_LATIN
+        String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PROFILE_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PROFILE_LATIN
                         :MessagesInterface.BTN_PROFILE_KRILL;
 
         Col col =new Col();
@@ -157,20 +201,20 @@ public class StartHandler implements Handler{
     public List<PartialBotApiMethod<? extends Serializable>> addContact(User user, String phone){
         user.setPhone(phone);
         user=userService.save(user);
-        String msg=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.MENU_MSG_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.MENU_MSG_UZ_LATIN
+        String msg=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.MENU_MSG_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.MENU_MSG_UZ_LATIN
                         :MessagesInterface.MENU_MSG_UZ_KRILL;
-        String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROMOTIONS_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
+        String BTN_PROMOTIONS=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PROMOTIONS_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PROMOTIONS_UZ_LATIN
                         :MessagesInterface.BTN_PROMOTIONS_UZ_KRILL;
-        String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_BASKET_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_BASKET_UZ_LATIN
+        String BTN_BASKET=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_BASKET_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_BASKET_UZ_LATIN
                         :MessagesInterface.BTN_BASKET_UZ_KRILL;
-        String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PRODUCT_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PRODUCT_UZ_LATIN
+        String BTN_PRODUCT=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PRODUCT_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PRODUCT_UZ_LATIN
                         :MessagesInterface.BTN_PRODUCT_UZ_KRILL;
-        String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU.name())? MessagesInterface.BTN_PROFILE_RU :
-                user.getLanguage().equals(Language.LANGUAGE_UZ_LATIN.name())?MessagesInterface.BTN_PROFILE_LATIN
+        String BTN_PROFILE=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.BTN_PROFILE_RU :
+                user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.BTN_PROFILE_LATIN
                         :MessagesInterface.BTN_PROFILE_KRILL;
 
         Col col =new Col();
@@ -193,9 +237,9 @@ public class StartHandler implements Handler{
     @Override
     public List<String> operatedCallBackQuery(User user) {
         List<String> callBackList=new ArrayList<>();
-        callBackList.add(Language.LANGUAGE_RU.name());
-        callBackList.add(Language.LANGUAGE_UZ_KRIL.name());
-        callBackList.add(Language.LANGUAGE_UZ_LATIN.name());
+        callBackList.add(Language.LANGUAGE_RU);
+        callBackList.add(Language.LANGUAGE_UZ);
+        callBackList.add(Language.LANGUAGE_OZ);
         callBackList.add(ProfileEnums.MY_LANGUAGE.name());
         callBackList.add(State.START.name());
         return callBackList;
