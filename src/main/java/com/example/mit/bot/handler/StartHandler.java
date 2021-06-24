@@ -15,7 +15,9 @@ import com.example.mit.util.MessagesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.mit.util.TelegramUtil.createEditMessageTemplate;
 import static com.example.mit.util.TelegramUtil.createMessageTemplate;
 
 
@@ -198,8 +201,8 @@ public class StartHandler implements Handler{
         );
     }
 
-    public List<PartialBotApiMethod<? extends Serializable>> addContact(User user, String phone){
-        user.setPhone(phone);
+    public List<PartialBotApiMethod<? extends Serializable>> addContact(User user, Update update){
+        user.setPhone(update.getMessage().getContact().getPhoneNumber());
         user=userService.save(user);
         String msg=user.getLanguage().equals(Language.LANGUAGE_RU)? MessagesInterface.MENU_MSG_RU :
                 user.getLanguage().equals(Language.LANGUAGE_OZ)?MessagesInterface.MENU_MSG_UZ_LATIN
@@ -222,11 +225,21 @@ public class StartHandler implements Handler{
         col.add(BTN_PROMOTIONS,State.PROMOTIONS.name());
         col.add(BTN_BASKET,State.BASKET.name());
         col.add(BTN_PROFILE,State.PROFILE.name());
-
-
+//        EditMessageReplyMarkup editMessageReplyMarkup=new EditMessageReplyMarkup();
+//        editMessageReplyMarkup.setMessageId(update.getMessage().getMessageId());
+//        editMessageReplyMarkup.setChatId(update.getMessage().getChatId());
+//        editMessageReplyMarkup.setReplyMarkup(col.getMarkup());
+//        System.out.println(update);
+//        System.out.println(update.getMessage());
+//        System.out.println(update);
         return Collections.singletonList(createMessageTemplate(user).setText(String.format("" +
                 msg, user.getName())).setReplyMarkup(col.getMarkup())
         );
+
+//        return Collections.singletonList(createEditMessageTemplate(
+//                String.valueOf(update.getMessage().getChatId()),update.getChosenInlineQuery().getInlineMessageId())
+//                .setReplyMarkup(col.getMarkup())
+//        );
     }
 
     @Override

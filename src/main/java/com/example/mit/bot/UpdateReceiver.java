@@ -93,7 +93,7 @@ public class UpdateReceiver {
                 final User user = userRepository.getByChatId(chatId)
                         .orElseGet(() -> userRepository.save(new User(chatId)));
 
-                return startHandler.addContact(user,update.getMessage().getContact().getPhoneNumber());
+                return startHandler.addContact(user,update);
             }
 
             throw new UnsupportedOperationException();

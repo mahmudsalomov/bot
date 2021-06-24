@@ -51,6 +51,7 @@ public class Bot extends TelegramLongPollingBot {
                 if (response instanceof SendMessage) {
 
 
+
                     if (update.hasCallbackQuery()) {
                         Optional<User> user = userRepository.getByChatId(update.getCallbackQuery().getFrom().getId());
 
@@ -83,7 +84,14 @@ public class Bot extends TelegramLongPollingBot {
 
 
                     } else
-                    executeWithExceptionCheck((SendMessage) response);
+                    {
+                        if (update.getMessage().hasContact()){
+                            deleteMessage(update);
+                            executeWithExceptionCheck((SendMessage) response);
+                        }
+                        else
+                            executeWithExceptionCheck((SendMessage) response);
+                    }
                 }
                 if (response instanceof SendPhoto) {
                     executeWithExceptionCheck((SendPhoto) response);
@@ -102,6 +110,7 @@ public class Bot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
+            e.printStackTrace();
             log.error("oops");
         }
     }
@@ -110,6 +119,7 @@ public class Bot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
+            e.printStackTrace();
             log.error("oops");
         }
     }
@@ -118,6 +128,7 @@ public class Bot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
+            e.printStackTrace();
             log.error("oops");
         }
     }
@@ -126,6 +137,7 @@ public class Bot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
+            e.printStackTrace();
             log.error("oops");
         }
     }
@@ -160,7 +172,7 @@ public class Bot extends TelegramLongPollingBot {
     public void deleteMessage(Update update){
         DeleteMessage deleteMessage=new DeleteMessage();
         if (update.hasMessage()) {
-            deleteMessage.setChatId(update.getMessage().getChatId()).setMessageId(update.getMessage().getMessageId());
+            deleteMessage.setChatId(update.getMessage().getChatId()).setMessageId(update.getMessage().getMessageId()-1);
         } else {
             deleteMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId()).setChatId(update.getCallbackQuery().getMessage().getChatId());
         }

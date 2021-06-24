@@ -12,6 +12,10 @@ public class TelegramUtil {
     public static SendMessage createMessageTemplate(User user) {
         return createMessageTemplate(String.valueOf(user.getChatId()));
     }
+    public static EditMessageReplyMarkup createEditMessageTemplate(String chatId,String inlineID) {
+        return new EditMessageReplyMarkup().setChatId(chatId).setInlineMessageId(inlineID);
+    }
+
     public static SendMessage createMessageTemplate(String chatId) {
         return new SendMessage()
                 .setChatId(chatId)
