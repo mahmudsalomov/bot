@@ -4,12 +4,14 @@ import com.example.mit.model.User;
 import com.example.mit.repository.UserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -42,67 +44,93 @@ public class Bot extends TelegramLongPollingBot {
     private UserRepository userRepository;
     private final UpdateReceiver updateReceiver;
 
+    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-        List<PartialBotApiMethod<? extends Serializable>> messagesToSend = updateReceiver.handle(update);
-        if (messagesToSend != null && !messagesToSend.isEmpty()) {
+        if (update.getMessage().getText().equals("photo")){
+            SendMessage sendMessage=new SendMessage();
+            sendMessage.setChatId(update.getMessage().getChatId());
+            sendMessage.enableWebPagePreview().enableHtml(true);
+            SendPhoto sendPhoto=new SendPhoto();
+//            sendPhoto.setPhoto("https://st.joinsport.io/albums/1052292/60d82cb27a76d_1920.jpg");
+            sendPhoto.setChatId(update.getMessage().getChatId());
+            sendPhoto.setParseMode(ParseMode.HTML);
 
-            messagesToSend.forEach(response -> {
-                if (response instanceof SendMessage) {
+            String url="<a href='https://st.joinsport.io/albums/1052292/60d82cb27a76d_1920.jpg'></a>";
+//            String url="https://st.joinsport.io/albums/1052292/60d82cb27a76d_1920.jpg";
+//            sendPhoto.setPhoto("https://st.joinsport.io/albums/1052292/60d82cb27a76d_1920.jpg");
+            sendPhoto.setPhoto("https://i.ibb.co/Nscw9br/toyota.jpg");
+            sendPhoto.setCaption("https://toyotacamry2010.herokuapp.com/toyotacamry");
+//            sendMessage.enableMarkdownV2(true);
+//            sendMessage.enableMarkdown(true);
+//            sendMessage.setParseMode(ParseMode.HTML);
+            sendMessage.setText("https://toyotacamry2010.herokuapp.com/toyotacamry");
 
-
-
-                    if (update.hasCallbackQuery()) {
-                        Optional<User> user = userRepository.getByChatId(update.getCallbackQuery().getFrom().getId());
-
-                        if (user.isPresent()&&user.get().getPhone()!=null&&user.get().getLanguage()!=null){
-                            long message_id = update.getCallbackQuery().getMessage().getMessageId();
-                            long chat_id = update.getCallbackQuery().getMessage().getChatId();
-
-                            try {
-                                InlineKeyboardMarkup replyMarkup=null;
-                                try {
-                                    replyMarkup = (InlineKeyboardMarkup) ((SendMessage) response).getReplyMarkup();
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                                EditMessageText new_message = new EditMessageText()
-                                        .setChatId(chat_id)
-                                        .setMessageId(toIntExact(message_id))
-                                        .enableMarkdown(true)
-                                        .setReplyMarkup(replyMarkup)
-                                        .setText(((SendMessage) response).getText());
-                                execute(new_message);
-                            } catch (TelegramApiException e) {
-                                executeWithExceptionCheck((SendMessage) response);
-//                            e.printStackTrace();
-                            }
-                        }
-                        else
-                        executeWithExceptionCheck((SendMessage) response);
-
-
-
-                    } else
-                    {
-                        if (update.getMessage().hasContact()){
-                            deleteMessage(update);
-                            executeWithExceptionCheck((SendMessage) response);
-                        }
-                        else
-                            executeWithExceptionCheck((SendMessage) response);
-                    }
-                }
-                if (response instanceof SendPhoto) {
-                    executeWithExceptionCheck((SendPhoto) response);
-                }else if (response instanceof EditMessageReplyMarkup){
-                    executeWithExceptionCheck((EditMessageReplyMarkup) response);
-                }else if (response instanceof AnswerCallbackQuery){
-                    executeWithExceptionCheck((AnswerCallbackQuery) response);
-                }
-
-            });
+//            sendMessage.setText("<strong>bold</strong>");
+//            sendMessage.setText("@bold[.](https://st.joinsport.io/albums/1052292/60d82cb27a76d_1920.jpg)");
+            execute(sendPhoto);
         }
+
+
+//        List<PartialBotApiMethod<? extends Serializable>> messagesToSend = updateReceiver.handle(update);
+//        if (messagesToSend != null && !messagesToSend.isEmpty()) {
+//
+//            messagesToSend.forEach(response -> {
+//                if (response instanceof SendMessage) {
+//
+//
+//
+//                    if (update.hasCallbackQuery()) {
+//                        Optional<User> user = userRepository.getByChatId(update.getCallbackQuery().getFrom().getId());
+//
+//                        if (user.isPresent()&&user.get().getPhone()!=null&&user.get().getLanguage()!=null){
+//                            long message_id = update.getCallbackQuery().getMessage().getMessageId();
+//                            long chat_id = update.getCallbackQuery().getMessage().getChatId();
+//
+//                            try {
+//                                InlineKeyboardMarkup replyMarkup=null;
+//                                try {
+//                                    replyMarkup = (InlineKeyboardMarkup) ((SendMessage) response).getReplyMarkup();
+//                                }catch (Exception e){
+//                                    e.printStackTrace();
+//                                }
+//                                EditMessageText new_message = new EditMessageText()
+//                                        .setChatId(chat_id)
+//                                        .setMessageId(toIntExact(message_id))
+//                                        .enableMarkdown(true)
+//                                        .setReplyMarkup(replyMarkup)
+//                                        .setText(((SendMessage) response).getText());
+//                                execute(new_message);
+//                            } catch (TelegramApiException e) {
+//                                executeWithExceptionCheck((SendMessage) response);
+////                            e.printStackTrace();
+//                            }
+//                        }
+//                        else
+//                        executeWithExceptionCheck((SendMessage) response);
+//
+//
+//
+//                    } else
+//                    {
+//                        if (update.getMessage().hasContact()){
+//                            deleteMessage(update);
+//                            executeWithExceptionCheck((SendMessage) response);
+//                        }
+//                        else
+//                            executeWithExceptionCheck((SendMessage) response);
+//                    }
+//                }
+//                if (response instanceof SendPhoto) {
+//                    executeWithExceptionCheck((SendPhoto) response);
+//                }else if (response instanceof EditMessageReplyMarkup){
+//                    executeWithExceptionCheck((EditMessageReplyMarkup) response);
+//                }else if (response instanceof AnswerCallbackQuery){
+//                    executeWithExceptionCheck((AnswerCallbackQuery) response);
+//                }
+//
+//            });
+//        }
 //       deleteMessage(update);
     }
 
